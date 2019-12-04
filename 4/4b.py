@@ -26,5 +26,4 @@ for i in range(lower, upper+1):
     if check(str(i), lower, upper):
         passwords.append(i)
 
-print(passwords)
 print(len(passwords))
