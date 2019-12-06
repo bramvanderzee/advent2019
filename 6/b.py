@@ -1,26 +1,17 @@
 import Planet as pl
 fn = 'input.txt'
 
-def addDepthToMoons(planet, curDepth):
-    for moons in planet.moons:
-        addDepthToMoons(moon, curDepth+1)
-
-def findIndirects(planets):
-    totalSteps = 0
-    for planet in planets:
-        searchTop = True
-        step = 0
-        curPlanet = planet
-        while searchTop:
-            if curPlanet.hasParent:
-                step += 1
-                curPlanet = curPlanet.parent
-            else:
-                searchTop = False
-        step -= 1
-        totalSteps += step
-    return totalSteps + 1
-            
+def findParents(planet):
+    parents = []
+    searching = True
+    curPlanet = planet
+    while searching:
+        if curPlanet.hasParent:
+            parents.append(curPlanet.parent)
+            curPlanet = curPlanet.parent
+        else:
+            searching = False
+    return parents
 
 lin = []
 print('Reading file...')
@@ -45,8 +36,21 @@ for pair in [(pl.Planet(p[0]), pl.Planet(p[1])) for p in orbitlist]:
     if planet in planets and moon in planets:
         planets[planets.index(planet)].addMoon(planets[planets.index(moon)])
 
-print('Finding depths...')
-numDirects = len(orbitlist)
-numIndirects = findIndirects(planets)
+print('Finding common orbit...')
+for p in planets:
+    if p.name == 'YOU':
+        you = p
+    elif p.name == 'SAN':
+        san = p
 
-print(numDirects + numIndirects)
+youParents = findParents(you)
+sanParents = findParents(san)
+
+while youParents[-1] == sanParents[-1]:
+    youParents.pop()
+    sanParents.pop()
+
+path = []
+path.extend(youParents)
+path.extend(sanParents)
+print(len(path))
