@@ -4,6 +4,8 @@ class Computer:
         self.name = name
         self.program = program
         self.running = True
+        self.nextIsInput = False
+        self.nextIsOutput = False
 
         self.__endInstruction(0)
 
@@ -54,6 +56,7 @@ class Computer:
             numIn = int(input('%s: Enter value:' % self.name))
         else:
             numIn = int(givenInput)
+            print('%s: Got input:' % self.name, givenInput)
         self.__writeParam(1, numIn)
         self.__endInstruction(2)
 
